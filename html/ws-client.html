@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8">
+<h3>Consulta por teléfono (WebSocket)</h3>
+<input id="tel" placeholder="3001112233"><button id="btn">Buscar</button>
+<pre id="out"></pre>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+<script>
+    const out = document.getElementById('out');
+    const sock = new SockJS('http://localhost:8080/ws');
+    const stomp = Stomp.over(sock);
+    stomp.connect({}, () => {
+        stomp.subscribe('/topic/person.lookup', msg => out.textContent = msg.body);
+        document.getElementById('btn').onclick = () => {
+            const tel = document.getElementById('tel').value.trim();
+            stomp.send('/app/person.lookup', {}, JSON.stringify({tel}));
+        };
+    });
+</script>

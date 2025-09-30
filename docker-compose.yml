@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    container_name: sd_db
+    environment:
+      POSTGRES_DB: sd
+      POSTGRES_USER: sd_user
+      POSTGRES_PASSWORD: sd_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdataws16:/var/lib/postgresql/data
+volumes:
+  pgdataws16:
